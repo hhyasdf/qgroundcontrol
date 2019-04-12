@@ -65,6 +65,7 @@ void MissionManager::writeArduPilotGuidedMissionItem(const QGeoCoordinate& gotoC
     _dedicatedLink = _vehicle->priorityLink();
     mavlink_msg_mission_item_encode_chan(qgcApp()->toolbox()->mavlinkProtocol()->getSystemId(),
                                          qgcApp()->toolbox()->mavlinkProtocol()->getComponentId(),
+                                         qgcApp()->toolbox()->mavlinkProtocol()->getSystemId(),   // 先默认group id为system id
                                          _dedicatedLink->mavlinkChannel(),
                                          &messageOut,
                                          &missionItem);

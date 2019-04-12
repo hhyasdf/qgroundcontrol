@@ -465,6 +465,7 @@ void UAS::startCalibration(UASInterface::StartCalibrationType calType)
     mavlink_message_t msg;
     mavlink_msg_command_long_pack_chan(mavlink->getSystemId(),
                                        mavlink->getComponentId(),
+                                       mavlink->getSystemId(),   // 先默认group id为system id
                                        _vehicle->priorityLink()->mavlinkChannel(),
                                        &msg,
                                        uasId,
@@ -782,6 +783,7 @@ void UAS::requestImage()
         mavlink_message_t msg;
         mavlink_msg_data_transmission_handshake_pack_chan(mavlink->getSystemId(),
                                                           mavlink->getComponentId(),
+                                                          mavlink->getSystemId(),   // 先默认group id为system id
                                                           _vehicle->priorityLink()->mavlinkChannel(),
                                                           &msg,
                                                           MAVLINK_DATA_STREAM_IMG_JPEG,
@@ -923,6 +925,7 @@ void UAS::setExternalControlSetpoint(float roll, float pitch, float yaw, float t
             uint8_t typeMask = 0x7; // disable rate control
             mavlink_msg_set_attitude_target_pack_chan(mavlink->getSystemId(),
                                                       mavlink->getComponentId(),
+                                                      mavlink->getSystemId(),   // 先默认group id为system id
                                                       _vehicle->priorityLink()->mavlinkChannel(),
                                                       &message,
                                                       QGC::groundTimeUsecs(),
@@ -946,6 +949,7 @@ void UAS::setExternalControlSetpoint(float roll, float pitch, float yaw, float t
             uint16_t typeMask = (1<<11)|(7<<6)|(7<<3); // select only POSITION control
             mavlink_msg_set_position_target_local_ned_pack_chan(mavlink->getSystemId(),
                                                                 mavlink->getComponentId(),
+                                                                mavlink->getSystemId(),   // 先默认group id为system id
                                                                 _vehicle->priorityLink()->mavlinkChannel(),
                                                                 &message,
                                                                 QGC::groundTimeUsecs(),
@@ -974,6 +978,7 @@ void UAS::setExternalControlSetpoint(float roll, float pitch, float yaw, float t
             uint16_t typeMask = (3<<10)|(7<<3)|(7<<0)|(1<<9); // select only FORCE control (disable everything else)
             mavlink_msg_set_position_target_local_ned_pack_chan(mavlink->getSystemId(),
                                                                 mavlink->getComponentId(),
+                                                                mavlink->getSystemId(),   // 先默认group id为system id
                                                                 _vehicle->priorityLink()->mavlinkChannel(),
                                                                 &message,
                                                                 QGC::groundTimeUsecs(),
@@ -1006,6 +1011,7 @@ void UAS::setExternalControlSetpoint(float roll, float pitch, float yaw, float t
             uint16_t typeMask = (1<<10)|(7<<6)|(7<<0); // select only VELOCITY control
             mavlink_msg_set_position_target_local_ned_pack_chan(mavlink->getSystemId(),
                                                                 mavlink->getComponentId(),
+                                                                mavlink->getSystemId(),   // 先默认group id为system id
                                                                 _vehicle->priorityLink()->mavlinkChannel(),
                                                                 &message,
                                                                 QGC::groundTimeUsecs(),
@@ -1048,6 +1054,7 @@ void UAS::setExternalControlSetpoint(float roll, float pitch, float yaw, float t
             // Send the MANUAL_COMMAND message
             mavlink_msg_manual_control_pack_chan(mavlink->getSystemId(),
                                                  mavlink->getComponentId(),
+                                                 mavlink->getSystemId(),   // 先默认group id为system id
                                                  _vehicle->priorityLink()->mavlinkChannel(),
                                                  &message,
                                                  this->uasId,
@@ -1080,6 +1087,7 @@ void UAS::setManual6DOFControlCommands(double x, double y, double z, double roll
         mask |= (1 << 6); // ignore throttle
         mavlink_msg_set_attitude_target_pack_chan(mavlink->getSystemId(),
                                                   mavlink->getComponentId(),
+                                                  mavlink->getSystemId(),   // 先默认group id为system id
                                                   _vehicle->priorityLink()->mavlinkChannel(),
                                                   &message,
                                                   QGC::groundTimeMilliseconds(), this->uasId, _vehicle->defaultComponentId(),
@@ -1087,7 +1095,7 @@ void UAS::setManual6DOFControlCommands(double x, double y, double z, double roll
         _vehicle->sendMessageOnLink(_vehicle->priorityLink(), message);
         quint16 position_mask = (1 << 3) | (1 << 4) | (1 << 5) |
             (1 << 6) | (1 << 7) | (1 << 8);
-        mavlink_msg_set_position_target_local_ned_pack_chan(mavlink->getSystemId(), mavlink->getComponentId(),
+        mavlink_msg_set_position_target_local_ned_pack_chan(mavlink->getSystemId(), mavlink->getComponentId(), mavlink->getSystemId(),   // 先默认group id为system id
                                                             _vehicle->priorityLink()->mavlinkChannel(),
                                                             &message, QGC::groundTimeMilliseconds(), this->uasId, _vehicle->defaultComponentId(),
                                                             MAV_FRAME_LOCAL_NED, position_mask, x, y, z, 0, 0, 0, 0, 0, 0, yaw, yawrate);
@@ -1334,6 +1342,7 @@ void UAS::sendHilState(quint64 time_us, float roll, float pitch, float yaw, floa
         mavlink_message_t msg;
         mavlink_msg_hil_state_quaternion_pack_chan(mavlink->getSystemId(),
                                                    mavlink->getComponentId(),
+                                                   mavlink->getSystemId(),   // 先默认group id为system id
                                                    _vehicle->priorityLink()->mavlinkChannel(),
                                                    &msg,
                                                    time_us, q, rollspeed, pitchspeed, yawspeed,
@@ -1414,6 +1423,7 @@ void UAS::sendHilSensors(quint64 time_us, float xacc, float yacc, float zacc, fl
         mavlink_message_t msg;
         mavlink_msg_hil_sensor_pack_chan(mavlink->getSystemId(),
                                          mavlink->getComponentId(),
+                                         mavlink->getSystemId(),   // 先默认group id为system id
                                          _vehicle->priorityLink()->mavlinkChannel(),
                                          &msg,
                                          time_us, xacc_corrupt, yacc_corrupt, zacc_corrupt, rollspeed_corrupt, pitchspeed_corrupt,
@@ -1496,6 +1506,7 @@ void UAS::sendHilGps(quint64 time_us, double lat, double lon, double alt, int fi
         mavlink_message_t msg;
         mavlink_msg_hil_gps_pack_chan(mavlink->getSystemId(),
                                       mavlink->getComponentId(),
+                                      mavlink->getSystemId(),   // 先默认group id为system id
                                       _vehicle->priorityLink()->mavlinkChannel(),
                                       &msg,
                                       time_us, fix_type, lat*1e7, lon*1e7, alt*1e3, eph*1e2, epv*1e2, vel*1e2, vn*1e2, ve*1e2, vd*1e2, course*1e2, satellites);
@@ -1571,6 +1582,7 @@ void UAS::sendMapRCToParam(QString param_id, float scale, float value0, quint8 p
 
     mavlink_msg_param_map_rc_pack_chan(mavlink->getSystemId(),
                                        mavlink->getComponentId(),
+                                       mavlink->getSystemId(),   // 先默认group id为system id
                                        _vehicle->priorityLink()->mavlinkChannel(),
                                        &message,
                                        this->uasId,
@@ -1598,6 +1610,7 @@ void UAS::unsetRCToParameterMap()
         mavlink_message_t message;
         mavlink_msg_param_map_rc_pack_chan(mavlink->getSystemId(),
                                            mavlink->getComponentId(),
+                                           mavlink->getSystemId(),   // 先默认group id为system id
                                            _vehicle->priorityLink()->mavlinkChannel(),
                                            &message,
                                            this->uasId,

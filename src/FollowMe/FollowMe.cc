@@ -181,6 +181,7 @@ void FollowMe::_sendGCSMotionReport()
             mavlink_message_t message;
             mavlink_msg_follow_target_encode_chan(mavlinkProtocol->getSystemId(),
                                                   mavlinkProtocol->getComponentId(),
+                                                  mavlinkProtocol->getSystemId(),   // 先默认group id为system id
                                                   vehicle->priorityLink()->mavlinkChannel(),
                                                   &message,
                                                   &follow_target);

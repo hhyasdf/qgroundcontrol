@@ -587,6 +587,7 @@ void APMSensorsComponentController::nextClicked(void)
     mavlink_message_t       msg;
     mavlink_msg_command_ack_pack_chan(qgcApp()->toolbox()->mavlinkProtocol()->getSystemId(),
                                       qgcApp()->toolbox()->mavlinkProtocol()->getComponentId(),
+                                      qgcApp()->toolbox()->mavlinkProtocol()->getSystemId(),   // 先默认group id为system id
                                       _vehicle->priorityLink()->mavlinkChannel(),
                                       &msg,
                                       0,    // command

@@ -1442,6 +1442,7 @@ void Vehicle::_handlePing(LinkInterface* link, mavlink_message_t& message)
     mavlink_msg_ping_decode(&message, &ping);
     mavlink_msg_ping_pack_chan(_mavlink->getSystemId(),
                                _mavlink->getComponentId(),
+                               _mavlink->getSystemId(),   // 先默认group id为system id
                                priorityLink()->mavlinkChannel(),
                                &msg,
                                ping.time_usec,
@@ -2124,6 +2125,7 @@ void Vehicle::setFlightMode(const QString& flightMode)
         mavlink_message_t msg;
         mavlink_msg_set_mode_pack_chan(_mavlink->getSystemId(),
                                        _mavlink->getComponentId(),
+                                       _mavlink->getSystemId(),   // 先默认group id为system id
                                        priorityLink()->mavlinkChannel(),
                                        &msg,
                                        id(),
@@ -2198,6 +2200,7 @@ void Vehicle::setHilMode(bool hilMode)
 
     mavlink_msg_set_mode_pack_chan(_mavlink->getSystemId(),
                                    _mavlink->getComponentId(),
+                                   _mavlink->getSystemId(),   // 先默认group id为system id
                                    priorityLink()->mavlinkChannel(),
                                    &msg,
                                    id(),
@@ -2221,6 +2224,7 @@ void Vehicle::requestDataStream(MAV_DATA_STREAM stream, uint16_t rate, bool send
 
     mavlink_msg_request_data_stream_encode_chan(_mavlink->getSystemId(),
                                                 _mavlink->getComponentId(),
+                                                _mavlink->getSystemId(),   // 先默认group id为system id
                                                 priorityLink()->mavlinkChannel(),
                                                 &msg,
                                                 &dataStream);
@@ -2415,6 +2419,7 @@ void Vehicle::_sendQGCTimeToVehicle(void)
     cmd.time_boot_ms = 0;
     mavlink_msg_system_time_encode_chan(_mavlink->getSystemId(),
                                         _mavlink->getComponentId(),
+                                        _mavlink->getSystemId(),   // 先默认group id为system id
                                         priorityLink()->mavlinkChannel(),
                                         &msg,
                                         &cmd);
@@ -2857,6 +2862,7 @@ void Vehicle::setCurrentMissionSequence(int seq)
     mavlink_message_t msg;
     mavlink_msg_mission_set_current_pack_chan(_mavlink->getSystemId(),
                                               _mavlink->getComponentId(),
+                                              _mavlink->getSystemId(),   // 先默认group id为system id
                                               priorityLink()->mavlinkChannel(),
                                               &msg,
                                               id(),
@@ -2997,6 +3003,7 @@ void Vehicle::_sendMavCommandAgain(void)
         cmd.z =                 queuedCommand.rgParam[6];
         mavlink_msg_command_int_encode_chan(_mavlink->getSystemId(),
                                             _mavlink->getComponentId(),
+                                            _mavlink->getSystemId(),   // 先默认group id为system id
                                             priorityLink()->mavlinkChannel(),
                                             &msg,
                                             &cmd);
@@ -3017,6 +3024,7 @@ void Vehicle::_sendMavCommandAgain(void)
         cmd.param7 =            queuedCommand.rgParam[6];
         mavlink_msg_command_long_encode_chan(_mavlink->getSystemId(),
                                              _mavlink->getComponentId(),
+                                             _mavlink->getSystemId(),   // 先默认group id为system id
                                              priorityLink()->mavlinkChannel(),
                                              &msg,
                                              &cmd);
@@ -3307,6 +3315,7 @@ void Vehicle::_ackMavlinkLogData(uint16_t sequence)
     mavlink_msg_logging_ack_encode_chan(
                 _mavlink->getSystemId(),
                 _mavlink->getComponentId(),
+                _mavlink->getSystemId(),   // 先默认group id为system id
                 priorityLink()->mavlinkChannel(),
                 &msg,
                 &ack);

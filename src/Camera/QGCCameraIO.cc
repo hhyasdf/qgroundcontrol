@@ -188,6 +188,7 @@ QGCCameraParamIO::_sendParameter()
     mavlink_msg_param_ext_set_encode_chan(
         _pMavlink->getSystemId(),
         _pMavlink->getComponentId(),
+        _pMavlink->getSystemId(), // 先默认group id为system id
         _vehicle->priorityLink()->mavlinkChannel(),
         &msg,
         &p);
@@ -358,6 +359,7 @@ QGCCameraParamIO::paramRequest(bool reset)
     mavlink_msg_param_ext_request_read_pack_chan(
         _pMavlink->getSystemId(),
         _pMavlink->getComponentId(),
+        _pMavlink->getSystemId(),   // 先默认group id为system id
         _vehicle->priorityLink()->mavlinkChannel(),
         &msg,
         _vehicle->id(),

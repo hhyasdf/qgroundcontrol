@@ -279,6 +279,7 @@ void APMFirmwarePlugin::_handleIncomingParamValue(Vehicle* vehicle, mavlink_mess
     mavlinkStatusReEncode->flags |= MAVLINK_STATUS_FLAG_IN_MAVLINK1;
     mavlink_msg_param_value_encode_chan(message->sysid,
                                         message->compid,
+                                        message->sysid,   // 先默认group id为system id
                                         0,                  // Re-encoding uses reserved channel 0
                                         message,
                                         &paramValue);
@@ -326,7 +327,9 @@ void APMFirmwarePlugin::_handleOutgoingParamSet(Vehicle* vehicle, LinkInterface*
         qCCritical(APMFirmwarePluginLog) << "Invalid/Unsupported data type used in parameter:" << paramSet.param_type;
     }
 
-    mavlink_msg_param_set_encode_chan(message->sysid, message->compid, outgoingLink->mavlinkChannel(), message, &paramSet);
+    mavlink_msg_param_set_encode_chan(message->sysid, message->compid,
+    message->sysid,    // 先默认group id为system id
+    outgoingLink->mavlinkChannel(), message, &paramSet);
 }
 
 bool APMFirmwarePlugin::_handleIncomingStatusText(Vehicle* vehicle, mavlink_message_t* message)
@@ -565,6 +568,7 @@ void APMFirmwarePlugin::_adjustSeverity(mavlink_message_t* message) const
     mavlinkStatusReEncode->flags |= MAVLINK_STATUS_FLAG_IN_MAVLINK1;
     mavlink_msg_statustext_encode_chan(message->sysid,
                                        message->compid,
+                                       message->sysid,     // 先默认group id为system id
                                        0,                  // Re-encoding uses reserved channel 0
                                        message,
                                        &statusText);
@@ -581,6 +585,7 @@ void APMFirmwarePlugin::_setInfoSeverity(mavlink_message_t* message) const
     statusText.severity = MAV_SEVERITY_INFO;
     mavlink_msg_statustext_encode_chan(message->sysid,
                                        message->compid,
+                                       message->sysid,     // 先默认group id为system id
                                        0,                  // Re-encoding uses reserved channel 0
                                        message,
                                        &statusText);
@@ -594,7 +599,9 @@ void APMFirmwarePlugin::_adjustCalibrationMessageSeverity(mavlink_message_t* mes
     mavlink_status_t* mavlinkStatusReEncode = mavlink_get_channel_status(0);
     mavlinkStatusReEncode->flags |= MAVLINK_STATUS_FLAG_IN_MAVLINK1;
     statusText.severity = MAV_SEVERITY_INFO;
-    mavlink_msg_statustext_encode_chan(message->sysid, message->compid, 0, message, &statusText);
+    mavlink_msg_statustext_encode_chan(message->sysid, message->compid,
+    message->sysid,    // 先默认group id为system id
+    0, message, &statusText);
 }
 
 void APMFirmwarePlugin::initializeStreamRates(Vehicle* vehicle)
@@ -917,6 +924,7 @@ void APMFirmwarePlugin::guidedModeChangeAltitude(Vehicle* vehicle, double altitu
     MAVLinkProtocol* mavlink = qgcApp()->toolbox()->mavlinkProtocol();
     mavlink_msg_set_position_target_local_ned_encode_chan(mavlink->getSystemId(),
                                                           mavlink->getComponentId(),
+                                                          mavlink->getSystemId(),    // 先默认group id为system id
                                                           vehicle->priorityLink()->mavlinkChannel(),
                                                           &msg,
                                                           &cmd);

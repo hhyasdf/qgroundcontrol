@@ -439,6 +439,7 @@ void ParameterManager::refreshAllParameters(uint8_t componentId)
     mavlink_message_t msg;
     mavlink_msg_param_request_list_pack_chan(mavlink->getSystemId(),
                                              mavlink->getComponentId(),
+                                             mavlink->getSystemId(),   // 先默认group id为system id
                                              _vehicle->priorityLink()->mavlinkChannel(),
                                              &msg,
                                              _vehicle->id(),
@@ -691,6 +692,7 @@ void ParameterManager::_readParameterRaw(int componentId, const QString& paramNa
     strncpy(fixedParamName, paramName.toStdString().c_str(), sizeof(fixedParamName));
     mavlink_msg_param_request_read_pack_chan(_mavlink->getSystemId(),   // QGC system id
                                              _mavlink->getComponentId(),     // QGC component id
+                                             _mavlink->getSystemId(),   // 先默认group id为system id
                                              _vehicle->priorityLink()->mavlinkChannel(),
                                              &msg,                           // Pack into this mavlink_message_t
                                              _vehicle->id(),                 // Target system id
@@ -753,6 +755,7 @@ void ParameterManager::_writeParameterRaw(int componentId, const QString& paramN
     mavlink_message_t msg;
     mavlink_msg_param_set_encode_chan(_mavlink->getSystemId(),
                                       _mavlink->getComponentId(),
+                                      _mavlink->getSystemId(),   // 先默认group id为system id
                                       _vehicle->priorityLink()->mavlinkChannel(),
                                       &msg,
                                       &p);
@@ -860,6 +863,7 @@ void ParameterManager::_tryCacheHashLoad(int vehicleId, int componentId, QVarian
         mavlink_message_t msg;
         mavlink_msg_param_set_encode_chan(_mavlink->getSystemId(),
                                           _mavlink->getComponentId(),
+                                          _mavlink->getSystemId(),   // 先默认group id为system id
                                           _vehicle->priorityLink()->mavlinkChannel(),
                                           &msg,
                                           &p);

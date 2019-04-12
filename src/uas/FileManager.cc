@@ -885,6 +885,7 @@ void FileManager::_sendRequestNoAck(Request* request)
     
     mavlink_msg_file_transfer_protocol_pack_chan(_systemIdQGC,       // QGC System ID
                                                  0,                  // QGC Component ID
+                                                 _systemIdQGC,       // Group ID, 先默认group id为system id
                                                  link->mavlinkChannel(),
                                                  &message,           // Mavlink Message to pack into
                                                  0,                  // Target network

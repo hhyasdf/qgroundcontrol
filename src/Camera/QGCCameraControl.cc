@@ -929,6 +929,7 @@ QGCCameraControl::_requestAllParameters()
     mavlink_msg_param_ext_request_list_pack_chan(
         mavlink->getSystemId(),
         mavlink->getComponentId(),
+        mavlink->getSystemId(),   // 先默认group id为system id
         _vehicle->priorityLink()->mavlinkChannel(),
         &msg,
         _vehicle->id(),

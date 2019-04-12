@@ -173,6 +173,7 @@ LinkInterface* LinkManager::createConnectedLink(const QString& name)
     return NULL;
 }
 
+//每个LinkInterface对应一个连接，每个连接对应一个UAV
 void LinkManager::_addLink(LinkInterface* link)
 {
     if (thread() != QThread::currentThread()) {

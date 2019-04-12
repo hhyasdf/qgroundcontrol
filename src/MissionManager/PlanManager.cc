@@ -111,6 +111,7 @@ void PlanManager::_writeMissionCount(void)
     _dedicatedLink = _vehicle->priorityLink();
     mavlink_msg_mission_count_pack_chan(qgcApp()->toolbox()->mavlinkProtocol()->getSystemId(),
                                         qgcApp()->toolbox()->mavlinkProtocol()->getComponentId(),
+                                        qgcApp()->toolbox()->mavlinkProtocol()->getSystemId(),   // 先默认group id为system id
                                         _dedicatedLink->mavlinkChannel(),
                                         &message,
                                         _vehicle->id(),
@@ -154,6 +155,7 @@ void PlanManager::_requestList(void)
     _dedicatedLink = _vehicle->priorityLink();
     mavlink_msg_mission_request_list_pack_chan(qgcApp()->toolbox()->mavlinkProtocol()->getSystemId(),
                                                qgcApp()->toolbox()->mavlinkProtocol()->getComponentId(),
+                                               qgcApp()->toolbox()->mavlinkProtocol()->getSystemId(),   // 先默认group id为system id
                                                _dedicatedLink->mavlinkChannel(),
                                                &message,
                                                _vehicle->id(),
@@ -293,6 +295,7 @@ void PlanManager::_readTransactionComplete(void)
     
     mavlink_msg_mission_ack_pack_chan(qgcApp()->toolbox()->mavlinkProtocol()->getSystemId(),
                                       qgcApp()->toolbox()->mavlinkProtocol()->getComponentId(),
+                                      qgcApp()->toolbox()->mavlinkProtocol()->getSystemId(),   // 先默认group id为system id
                                       _dedicatedLink->mavlinkChannel(),
                                       &message,
                                       _vehicle->id(),
@@ -351,6 +354,7 @@ void PlanManager::_requestNextMissionItem(void)
     if (_vehicle->capabilityBits() & MAV_PROTOCOL_CAPABILITY_MISSION_INT) {
         mavlink_msg_mission_request_int_pack_chan(qgcApp()->toolbox()->mavlinkProtocol()->getSystemId(),
                                                   qgcApp()->toolbox()->mavlinkProtocol()->getComponentId(),
+                                                  qgcApp()->toolbox()->mavlinkProtocol()->getSystemId(),   // 先默认group id为system id
                                                   _dedicatedLink->mavlinkChannel(),
                                                   &message,
                                                   _vehicle->id(),
@@ -360,6 +364,7 @@ void PlanManager::_requestNextMissionItem(void)
     } else {
         mavlink_msg_mission_request_pack_chan(qgcApp()->toolbox()->mavlinkProtocol()->getSystemId(),
                                               qgcApp()->toolbox()->mavlinkProtocol()->getComponentId(),
+                                              qgcApp()->toolbox()->mavlinkProtocol()->getSystemId(),   // 先默认group id为system id
                                               _dedicatedLink->mavlinkChannel(),
                                               &message,
                                               _vehicle->id(),
@@ -534,6 +539,7 @@ void PlanManager::_handleMissionRequest(const mavlink_message_t& message, bool m
     if (missionItemInt) {
         mavlink_msg_mission_item_int_pack_chan(qgcApp()->toolbox()->mavlinkProtocol()->getSystemId(),
                                                qgcApp()->toolbox()->mavlinkProtocol()->getComponentId(),
+                                               qgcApp()->toolbox()->mavlinkProtocol()->getSystemId(),   // 先默认group id为system id
                                                _dedicatedLink->mavlinkChannel(),
                                                &messageOut,
                                                _vehicle->id(),
@@ -554,6 +560,7 @@ void PlanManager::_handleMissionRequest(const mavlink_message_t& message, bool m
     } else {
         mavlink_msg_mission_item_pack_chan(qgcApp()->toolbox()->mavlinkProtocol()->getSystemId(),
                                            qgcApp()->toolbox()->mavlinkProtocol()->getComponentId(),
+                                           qgcApp()->toolbox()->mavlinkProtocol()->getSystemId(),   // 先默认group id为system id
                                            _dedicatedLink->mavlinkChannel(),
                                            &messageOut,
                                            _vehicle->id(),
@@ -895,6 +902,7 @@ void PlanManager::_removeAllWorker(void)
     _dedicatedLink = _vehicle->priorityLink();
     mavlink_msg_mission_clear_all_pack_chan(qgcApp()->toolbox()->mavlinkProtocol()->getSystemId(),
                                             qgcApp()->toolbox()->mavlinkProtocol()->getComponentId(),
+                                            qgcApp()->toolbox()->mavlinkProtocol()->getSystemId(),   // 先默认group id为system id
                                             _dedicatedLink->mavlinkChannel(),
                                             &message,
                                             _vehicle->id(),

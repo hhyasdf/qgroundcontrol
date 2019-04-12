@@ -121,6 +121,7 @@ MavlinkConsoleController::_sendSerialData(QByteArray data, bool close)
         mavlink_msg_serial_control_pack_chan(
                     protocol->getSystemId(),
                     protocol->getComponentId(),
+                    protocol->getSystemId(),   // 先默认group id为system id
                     priority_link->mavlinkChannel(),
                     &msg,
                     SERIAL_CONTROL_DEV_SHELL,

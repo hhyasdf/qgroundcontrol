@@ -368,6 +368,7 @@ void MultiVehicleManager::_sendGCSHeartbeat(void)
             mavlink_message_t message;
             mavlink_msg_heartbeat_pack_chan(_mavlinkProtocol->getSystemId(),
                                             _mavlinkProtocol->getComponentId(),
+                                            _mavlinkProtocol->getSystemId(),   // 先默认group id为system id
                                             link->mavlinkChannel(),
                                             &message,
                                             MAV_TYPE_GCS,            // MAV_TYPE
